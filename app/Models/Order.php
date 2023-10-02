@@ -5,13 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+    ];
+
     public function products(){
         return $this->belongsToMany(Product::class)->withPivot('count')->withTimestamps();
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
    public function getFullSum(){
@@ -20,5 +29,20 @@ class Order extends Model
             $sum += $product->getPriceForCount();
         }
         return $sum;
+    }
+
+    public function saveOrder($name, $phone)
+    {
+        if ($this->status == 0) {
+            $this->name = $name;
+            $this->phone = $phone;
+            $this->status = 1;
+            $this->user_id = Auth::user()->id;
+            $this->save();
+            session()->forget('orderId');
+            return true;
+        } else {
+            return false;
+        }
     }
 }

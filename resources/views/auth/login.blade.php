@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('auth.layouts.master')
+
+@section('title','Авторизация')
 
 @section('content')
 <div class="container">

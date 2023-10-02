@@ -1,8 +1,21 @@
 <div class="col-sm-6 col-md-4">
     <div class="thumbnail">
-        <img src="#iphone_x.jpg" alt="iPhone X 64GB">
+        <div class="labels">
+            @if($product->isNew())
+                <span class="badge badge-success">Новинка</span>
+            @endif
+
+            @if($product->isRecommend())
+                <span class="badge badge-warning">Рекомендован</span>
+            @endif
+
+            @if($product->isHit())
+                <span class="badge badge-danger">Хит продаж</span>
+            @endif
+        </div>
+        <img src="{{ asset('storage/'.$product->image) }}"  height="240px">
         <div class="caption">
-            <h3>{{$product->name}}}</h3>
+            <h3>{{$product->name}}</h3>
             <p>{{$product->price}}</p>
             <p>
                 <form action="{{route('basket-add',$product)}}" method="POST">

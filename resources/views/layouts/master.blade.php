@@ -11,26 +11,41 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <!-- <link href="/css/app.css" rel="stylesheet"> -->
-    <link href="/css/starter-template.css" rel="stylesheet">
-</head>
+     {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
+    <link href="{{ asset('/css/starter-template.css')}}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+   </head>
 <body>
-<nav class="navbar navbar-inverse ">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{{route('main')}}">Интернет Магазин</a>
+            <a class="navbar-brand" href="{{route('index')}}">Интернет Магазин</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li  class="active" ><a href="{{route('main')}}">Все товары</a></li>
-                <li ><a href="{{route('categories')}}">Категории</a>
-                </li>
-                <li ><a href="{{route('basket')}}">В корзину</a></li>
-                <li><a href="{{route('main')}}">Сбросить проект в начальное состояние</a></li>
+                <li @routeactive('index') ><a href="{{route('index')}}">Все товары</a></li>
+                <li @routeactive('categor*')><a href="{{route('categories')}}">Категории</a></li>
+                <li @routeactive('basket*')><a href="{{route('basket')}}">В корзину</a></li>
+                <li><a href="{{route('reset')}}">Сбросить проект в начальное состояние</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://laravel-diplom-1.rdavydov.ru/admin/home">Панель администратора</a></li>
+                @guest
+                <li><a href="{{route('login')}}">Войти</a></li>
+                @endguest
+
+                @auth
+                @admin
+                <li><a href="{{route('home')}}">Панель администратора</a></li>
+               @else
+                <li><a href="{{route('person.home')}}">Ваши заказы</a></li>
+               @endadmin
+                <li><a href="#">{{Auth::user()->name}}</a></li>
+                <li><a href="{{route('get-logout')}}">Выйти</a></li>
+                @endauth
+
             </ul>
         </div>
     </div>
@@ -39,6 +54,15 @@
 
 <div class="container">
     <div class="starter-template">
+        @if(session()->has('success'))
+        <p class="alert alert-success">{{ session()->get('success') }}</p>
+    @endif
+    @if(session()->has('warning'))
+        <p class="alert alert-warning">{{ session()->get('warning') }}</p>
+    @endif
+    @if(session()->has('empty'))
+    <p class="alert alert-info">{{ session()->get('empty') }}</p>
+@endif
        @yield('content')
     </div>
 </div>

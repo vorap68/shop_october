@@ -23,7 +23,7 @@
                     <tr>
                     <td>
                         <a href="{{route('product',$product->id)}}">
-                            <img height="56px" src="#">
+                            <img height="56px" src= "{{ asset('storage/'.$product->image) }}" >
                             {{$product->name}}
                         </a>
                     </td>

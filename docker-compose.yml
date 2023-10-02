@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-    
+
   nginx:
     image: nginx:latest
     volumes:
@@ -29,7 +29,7 @@ services:
     volumes:
       - ./tmp/db:/var/lib/mysql
     environment:
-        MYSQL_DATABASE: lardocker
+        MYSQL_DATABASE: devid
         MYSQL_ROOT_PASSWORD: root
     ports:
       - 8111:3306
@@ -60,4 +60,3 @@ services:
 
       - 8081:80
 
- 
